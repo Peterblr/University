@@ -29,27 +29,45 @@
                                 <th>
                                     @Html.DisplayNameFor(model => model.LastName)
                                 </th>
-                                <th>
+                                <td>
                                     @Html.DisplayFor(model => model.LastName)
-                                </th>
+                                </td>
                             </tr>
                             <tr>
                                 <th>
                                     @Html.DisplayNameFor(model => model.FirstMidName)
                                 </th>
-                                <th>
+                                <td>
                                     @Html.DisplayFor(model => model.FirstMidName)
-                                </th>
+                                </td>
                             </tr>
                             <tr>
                                 <th>
                                     @Html.DisplayNameFor(model => model.EnrollmentDate)
                                 </th>
-                                <th>
+                                <td>
                                     @Html.DisplayFor(model => model.EnrollmentDate)
-                                </th>
+                                </td>
                             </tr>
                         </thead>
+                    </table>
+                    <table class="table text-start">
+
+                        <tr>
+                            <th>Course Title</th>
+                            <th>Grade</th>
+                        </tr>
+                        @foreach (var item in Model.Enrollments)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Course.Title)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Grade)
+                                </td>
+                            </tr>
+                        }
                     </table>
                     <div class="d-grid gap-2 pt-4">
                         <a class="btn btn-outline-info bg-gradient" asp-action="Edit" asp-route-id="@Model?.ID"><i class="bi bi-pencil-square"></i>&ensp;Edit</a>
