@@ -19,6 +19,9 @@ namespace University.Data
             modelBuilder.Entity<Course>().ToTable("Course");
             modelBuilder.Entity<Enrollment>().ToTable("Enrollment");
             modelBuilder.Entity<Student>().ToTable("Student");
+
+            modelBuilder.Seed();
+            base.OnModelCreating(modelBuilder);
         }
     }
 }
