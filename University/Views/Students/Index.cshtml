@@ -1,4 +1,6 @@
 ﻿@model IEnumerable<University.Models.Student>
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
 
 @{
     ViewData["Title"] = "Index";
@@ -63,5 +65,27 @@
                 }
             </tbody>
         </table>
+        <br />
+
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model. .PageCount
+
+        @Html.PagedListPager(
+        (IPagedList)Model,
+        page => Url.Action("Index", "Students", new { page, sortOrder = ViewData["DateSortParm"], currentFilter = ViewData["CurrentFilter"] }),
+        new X.PagedList.Web.Common.PagedListRenderOptions
+        {
+        //ContainerDivClasses = new[] { "navigation" },
+        //LiElementClasses = new[] { "page-item" },
+        //PageClasses = new[] { "page-link" },
+        //DisplayEllipsesWhenNotShowingAllPageNumbers = false,
+        ActiveLiElementClass = "active",
+        PageClasses = new[]{ "page-link"},
+        LiElementClasses=new[] { "page-item" },
+        UlElementClasses = new[] { "pagination","justify-content-center", "mt-3" },
+        LinkToNextPageFormat = "Next",
+        LinkToPreviousPageFormat = "Previous",
+        MaximumPageNumbersToDisplay = 5,
+        })
+
     </div>
 </div>
