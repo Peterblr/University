@@ -1,6 +1,4 @@
-﻿@model IEnumerable<University.Models.Student>
-@using X.PagedList;
-@using X.PagedList.Mvc.Core;
+﻿@model PaginatedList<University.Models.Student>
 
 @{
     ViewData["Title"] = "Index";
@@ -32,13 +30,13 @@
             <thead>
                 <tr>
                     <th>
-                        <a class="text-decoration-none" asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(model => model.LastName)</a>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Last Name</a>
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.FirstMidName)
+                        FirstMidName
                     </th>
                     <th>
-                        <a class="text-decoration-none" asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">@Html.DisplayNameFor(model => model.EnrollmentDate)</a>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Enrollment Date</a>
                     </th>
                     <th></th>
                 </tr>
@@ -67,25 +65,17 @@
         </table>
         <br />
 
-        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model. .PageCount
+        @{
+            var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+            var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+        }
 
-        @Html.PagedListPager(
-        (IPagedList)Model,
-        page => Url.Action("Index", "Students", new { page, sortOrder = ViewData["DateSortParm"], currentFilter = ViewData["CurrentFilter"] }),
-        new X.PagedList.Web.Common.PagedListRenderOptions
-        {
-        //ContainerDivClasses = new[] { "navigation" },
-        //LiElementClasses = new[] { "page-item" },
-        //PageClasses = new[] { "page-link" },
-        //DisplayEllipsesWhenNotShowingAllPageNumbers = false,
-        ActiveLiElementClass = "active",
-        PageClasses = new[]{ "page-link"},
-        LiElementClasses=new[] { "page-item" },
-        UlElementClasses = new[] { "pagination","justify-content-center", "mt-3" },
-        LinkToNextPageFormat = "Next",
-        LinkToPreviousPageFormat = "Previous",
-        MaximumPageNumbersToDisplay = 5,
-        })
+        <a asp-action="Index" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="btn btn-outline-secondary bg-gradient text-dark @prevDisabled">
+            Previous
+        </a>
+        <a asp-action="Index" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="btn btn-outline-secondary bg-gradient text-dark @nextDisabled">
+            Next
+        </a>
 
     </div>
 </div>

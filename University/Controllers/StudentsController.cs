@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using University.Data;
 using University.Models;
-using X.PagedList;
+//using X.PagedList;
 
 namespace University.Controllers
 {
@@ -25,11 +25,8 @@ namespace University.Controllers
         {
             ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
-            ViewData["CurrentFilter"] = searchString;
-
-            var students = from s in _context.Students
-                           select s;
-
+            ViewData["CurrentSort"] = sortOrder;
+                      
             if (searchString != null)
             {
                 pageNumber = 1;
@@ -38,6 +35,11 @@ namespace University.Controllers
             {
                 searchString = currentFilter;
             }
+
+            ViewData["CurrentFilter"] = searchString;
+
+            var students = from s in _context.Students
+                           select s;
 
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -63,9 +65,7 @@ namespace University.Controllers
 
             int pageSize = 3;
 
-            int page = (pageNumber ?? 1);
-
-            return View(students.ToPagedList(page, pageSize));
+            return View(await PaginatedList<Student>.CreateAsync(students.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Students/Details/5
