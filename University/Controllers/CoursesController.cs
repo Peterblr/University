@@ -22,8 +22,8 @@ namespace University.Controllers
         // GET: Courses
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Courses.Include(c => c.Department);
-            return View(await applicationDbContext.ToListAsync());
+            var courses = _context.Courses.Include(c => c.Department).AsNoTracking();
+            return View(await courses.ToListAsync());
         }
 
         // GET: Courses/Details/5
